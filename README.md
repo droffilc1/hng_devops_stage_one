@@ -102,6 +102,5 @@ By default, the API will run on a random port check the terminal. You can test t
 
 ```bash
 http://localhost:5000/api/classify-number?number=371
-```
 
-### Project Structure
+```

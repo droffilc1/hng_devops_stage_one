@@ -78,26 +78,41 @@ bool IsPerfect(int n)
 
 bool IsArmstrong(int n)
 {
-  var digits = n.ToString().ToCharArray();
-  int power = digits.Length;
+  // Determine the sign and work with the absolute value.
+  int sign = n < 0 ? -1 : 1;
+  string absStr = Math.Abs(n).ToString();
+  int power = absStr.Length;
   int sum = 0;
-  foreach (char c in digits)
+
+  // Sum the digits raised to the power.
+  foreach (char c in absStr)
   {
     int d = int.Parse(c.ToString());
     sum += (int)Math.Pow(d, power);
   }
+
+  // Reapply the sign.
+  sum *= sign;
+
   return sum == n;
 }
+
 
 int DigitSum(int n)
 {
   int sum = 0;
   foreach (char c in n.ToString())
   {
+    if (c == '-')
+      continue;
+
     sum += int.Parse(c.ToString());
   }
-  return sum;
+
+  return n < 0 ? -sum : sum;
 }
+
+
 
 string[] GetProperties(int n)
 {
@@ -130,7 +145,7 @@ app.MapGet("/api/classify-number", async (HttpContext context) =>
   if (!int.TryParse(query["number"], out int number))
   {
     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-    return Results.Json(new { number = query["number"].ToString(), error = true });
+    return Results.Json(new { number = "alphabet", error = true });
   }
 
   // Retrieve fun fact from Numbers API
